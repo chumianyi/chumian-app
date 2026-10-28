@@ -1,0 +1,7 @@
+<network-security-config>
+    <!-- Existing service is HTTP; credentials remain at risk on untrusted networks.
+         Configurable endpoints require this policy; switch to HTTPS in production. -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors><certificates src="system" /></trust-anchors>
+    </base-config>
+</network-security-config>

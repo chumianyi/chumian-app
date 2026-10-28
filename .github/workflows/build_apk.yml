@@ -1,0 +1,66 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.8'
+          cache: false
+
+      - name: Precache Android artifacts
+        run: flutter precache --android
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK packages
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools" "platforms;android-35" "platforms;android-36" "build-tools;35.0.0" "build-tools;36.0.0"
+
+      - name: Generate release keystore
+        run: |
+          $JAVA_HOME/bin/keytool -genkey -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias chumian -storepass android -keypass android \
+            -dname "CN=ChuMian, OU=Dev, O=ChuMian, L=CN, S=CN, C=CN"
+          {
+            echo "storeFile=../release.jks"
+            echo "storePassword=android"
+            echo "keyAlias=chumian"
+            echo "keyPassword=android"
+          } > android/key.properties
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: 初眠动漫客户端 v1.0.0
+          files: build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

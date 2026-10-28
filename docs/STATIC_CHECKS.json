@@ -1,0 +1,13 @@
+{
+  "checks": "passed",
+  "own_dart_files": 17,
+  "own_dart_lines": 1644,
+  "test_source_files": 1,
+  "android_min_sdk": 26,
+  "miuix": "1.3.0",
+  "flutter_reference": "3.47.8",
+  "compiled": false,
+  "flutter_tests_executed": false,
+  "real_device_validated": false,
+  "static_syntax_only": true
+}

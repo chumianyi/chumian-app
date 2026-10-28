@@ -1,0 +1,27 @@
+name: chumian_app
+description: 初眠动漫官方接口用户客户端
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.12.2 <4.0.0'
+  flutter: '>=3.44.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_miuix:
+    path: packages/flutter_miuix
+  dio: 5.11.1
+  video_player: 2.14.1
+  flutter_secure_storage: 11.2.0
+  shared_preferences: 2.5.6
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/night_journey.png
+    - assets/licenses/MIUIX_LICENSE
